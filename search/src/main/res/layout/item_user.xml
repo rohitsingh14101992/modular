@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   xmlns:tools="http://schemas.android.com/tools"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:layout_marginTop="8dp"
+                                   android:layout_marginLeft="8dp"
+                                   android:layout_marginRight="8dp"
+                                   android:elevation="4dp"
+                                   app:cardCornerRadius="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:minHeight="56dp"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/userName_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/avatar_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="User Name" />
+
+        <ImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="16dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/userName_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars[0]" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

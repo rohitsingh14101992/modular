@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    rxJava.values().forEach { compileOnly it }
+    network.values().forEach { compileOnly it }
+    compileOnly di.dagger
+    droid.values().forEach { compileOnly it }
+    compileOnly di.daggerAndroid
+    compileOnly glide.glide
+    kapt glide.glideAnnotationProcessor
+    compileOnly lifecycle.extensions
+    compileOnly lifecycle.runtime
+    kapt di.daggerCompiler
+    kapt di.daggerAndroidCompiler
+    implementation  project(path: ':search_bridge')
+    implementation  project(path: ':user_bridge')
+    implementation  project(':base')
+}
