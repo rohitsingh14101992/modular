@@ -1,15 +1,12 @@
 package demo.modulesexample.di
 
 import dagger.Module
-import dagger.android.AndroidInjectionModule
 import demo.m.repository.di.GetUserRepositoryModule
 import demo.m.search.di.SearchNavigationModule
 import demo.m.user.di.UserDetailsNavigationModule
 
 @Module(
-    includes = [AndroidInjectionModule::class, NetworkModule::class, SearchNavigationModule::class,
+    includes = [NetworkModule::class, SearchNavigationModule::class,
         UserDetailsNavigationModule::class, GetUserRepositoryModule::class]
 )
-class AppModule {
-
-}
+class AppModule

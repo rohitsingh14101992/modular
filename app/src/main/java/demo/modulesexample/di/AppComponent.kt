@@ -13,5 +13,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class]
 )
-interface AppComponent : AndroidInjector<DemoApp>, MainActivityComponentParent,
-    UserDetailsComponentParent, SearchActivityComponentParent
+interface AppComponent :
+    UserDetailsComponentParent, SearchActivityComponentParent, MainActivityComponentParent {
+    fun inject(app: DemoApp)
+}
