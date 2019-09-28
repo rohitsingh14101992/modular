@@ -1,11 +1,13 @@
 package demo.m.search.di
 
+import dagger.Component
 import dagger.Module
 import dagger.Provides
 import demo.m.base.ScreenScope
 import demo.m.search.repo.UserSearchRepository
 import demo.m.search.repo.UserSearchRepositoryImpl
 import demo.m.search.repo.UserSearchServiceApi
+import demo.m.search.screen.SearchActivity
 import demo.m.search.screen.SearchActivityViewIntent
 import demo.m.search.screen.SearchActivityViewModelFactory
 import demo.m.user_bridge.UserDetailsViewNavigation
@@ -17,17 +19,18 @@ import retrofit2.Retrofit
 class SearchActivityModule {
 
     @Provides
-    fun provideUserSearchApi(retrofit: Retrofit) : UserSearchServiceApi =
+    fun provideUserSearchApi(retrofit: Retrofit): UserSearchServiceApi =
         retrofit.create(UserSearchServiceApi::class.java)
 
     @Provides
-    fun providesUserSearchRepository(userSearchServiceApi: UserSearchServiceApi) :
+    fun providesUserSearchRepository(userSearchServiceApi: UserSearchServiceApi):
             UserSearchRepository = UserSearchRepositoryImpl(userSearchServiceApi)
 
     @ScreenScope
     @Provides
     internal
-    fun providesViewIntentSubject(): PublishSubject<SearchActivityViewIntent> = PublishSubject.create()
+    fun providesViewIntentSubject(): PublishSubject<SearchActivityViewIntent> =
+        PublishSubject.create()
 
     @Provides
     internal
@@ -42,4 +45,19 @@ class SearchActivityModule {
     ): SearchActivityViewModelFactory =
         SearchActivityViewModelFactory(repository, subject, userDetailsViewNavigation)
 
+}
+
+@ScreenScope
+@Component(
+    modules = [SearchActivityModule::class],
+    dependencies = [SearchActivityComponentParent::class]
+)
+interface SearchActivityComponent {
+    fun inject(searchActivity: SearchActivity)
+}
+
+
+interface SearchActivityComponentParent {
+    fun retrofit(): Retrofit
+    fun userDetailsNavigation(): UserDetailsViewNavigation
 }

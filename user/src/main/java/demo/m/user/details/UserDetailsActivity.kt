@@ -7,9 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
 import demo.m.base.model.User
+import demo.m.base.parent
 import demo.m.user.R
+import demo.m.user.di.DaggerUserDetailsComponent
 import javax.inject.Inject
 
 class UserDetailsActivity : AppCompatActivity() {
@@ -23,17 +24,22 @@ class UserDetailsActivity : AppCompatActivity() {
         val PARAM_USER_KEY = "param_user"
         fun getIntent(context: Context, user: User): Intent =
             Intent(context, UserDetailsActivity::class.java).apply {
-                putExtra (PARAM_USER_KEY, user)
-                putExtra("int",111)
+                putExtra(PARAM_USER_KEY, user)
+                putExtra("int", 111)
             }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        setUpDI()
         initDataBinding()
         binding.repositoryRv.layoutManager = LinearLayoutManager(this)
         binding.repositoryRv.adapter = RepoListAdapter()
+    }
+
+    private fun setUpDI() {
+        DaggerUserDetailsComponent.builder().userDetailsComponentParent(parent()).build()
+            .inject(this)
     }
 
 

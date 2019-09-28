@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
+import demo.m.base.parent
 import demo.m.search.R
 import demo.m.search.databinding.SearchViewBinding
+import demo.m.search.di.DaggerSearchActivityComponent
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -21,8 +22,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: SearchViewBinding
     private val compositeDisposable = CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        setUpDI()
         initDataBinding()
         binding.searchUserRv.layoutManager = LinearLayoutManager(this)
         binding.searchUserRv.adapter = UserListAdapter(viewModel.clickListener)
@@ -45,6 +46,11 @@ class SearchActivity : AppCompatActivity() {
         binding.setLifecycleOwner(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SearchUserViewModel::class.java]
         binding.vm = viewModel
+    }
+
+    private fun setUpDI() {
+        DaggerSearchActivityComponent.builder().searchActivityComponentParent(parent()).build()
+            .inject(this)
     }
 
     override fun onDestroy() {

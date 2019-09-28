@@ -6,9 +6,9 @@ import android.view.View
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
+import demo.m.base.model.User
 import demo.m.base.toObservable
 import demo.m.search.repo.UserSearchRepository
-import demo.m.base.model.User
 import demo.m.search_bridge.model.UserResult
 import demo.m.user_bridge.UserDetailsViewNavigation
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,8 +18,11 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class SearchUserViewModel constructor(val repository: UserSearchRepository, val subjectViewIntent: PublishSubject<SearchActivityViewIntent>,
-                                      val userDetailsViewNavigation: UserDetailsViewNavigation) :  ViewModel() {
+class SearchUserViewModel constructor(
+    val repository: UserSearchRepository,
+    val subjectViewIntent: PublishSubject<SearchActivityViewIntent>,
+    val userDetailsViewNavigation: UserDetailsViewNavigation
+) : ViewModel() {
     var keyword = ObservableField<String>("")
     private val keywordEmitter: BehaviorSubject<String> = BehaviorSubject.create()
     val compositeDisposable = CompositeDisposable()
@@ -34,7 +37,8 @@ class SearchUserViewModel constructor(val repository: UserSearchRepository, val 
         }
     }
 
-    fun getUserDetailsNavigation(context: Context, user: User) = userDetailsViewNavigation.getIntent(context, user)
+    fun getUserDetailsNavigation(context: Context, user: User) =
+        userDetailsViewNavigation.getIntent(context, user)
 
     init {
         compositeDisposable.add(keyword.toObservable()
@@ -43,36 +47,36 @@ class SearchUserViewModel constructor(val repository: UserSearchRepository, val 
                     keywordEmitter.onNext(it)
                 }
 
-            }.subscribe())
+            }.subscribe()
+        )
         compositeDisposable.add(showLoaderSubject
             .observeOn(AndroidSchedulers.mainThread())
-           .subscribe{
-               showLoader.set(if (it) View.VISIBLE else View.GONE)
-           })
+            .subscribe {
+                showLoader.set(if (it) View.VISIBLE else View.GONE)
+            })
         subscribeSearchKeyword()
     }
 
 
-
     private fun subscribeSearchKeyword() {
 
-           val disposable =  keywordEmitter
-                .filter { it.isNotBlank() && it.length >= MINIMUM_SEARCH_CHARACTER_LENGTH }
-                .debounce(START_SEARCH_DELAY, TimeUnit.SECONDS)
-                .distinctUntilChanged()
-                .switchMapSingle {
-                    showLoaderSubject.onNext(true)
-                    repository.getUsers(it)
-                }
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    showLoaderSubject.onNext(false)
-                    response.set(it)
-                }, {
-                    showLoaderSubject.onNext(false)
-                    Log.e("error", it.toString())
-                })
+        val disposable = keywordEmitter
+            .filter { it.isNotBlank() && it.length >= MINIMUM_SEARCH_CHARACTER_LENGTH }
+            .debounce(START_SEARCH_DELAY, TimeUnit.SECONDS)
+            .distinctUntilChanged()
+            .switchMapSingle {
+                showLoaderSubject.onNext(true)
+                repository.getUsers(it)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                showLoaderSubject.onNext(false)
+                response.set(it)
+            }, {
+                showLoaderSubject.onNext(false)
+                Log.e("error", it.toString())
+            })
         compositeDisposable.add(disposable)
 
     }

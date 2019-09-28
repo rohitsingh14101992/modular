@@ -12,14 +12,14 @@ import retrofit2.Retrofit
 @Module
 class GetUserRepositoryModule {
     @Provides
-    fun provideApi(retrofit: Retrofit) : RepositoryApi =
+    fun provideApi(retrofit: Retrofit): RepositoryApi =
         retrofit.create(RepositoryApi::class.java)
 
     @Provides
-    fun providesUserRepository(repositoryApi: RepositoryApi) :
+    fun providesUserRepository(repositoryApi: RepositoryApi):
             Repository = RepositoryImpl(repositoryApi)
 
     @Provides
-    fun provideGetUserRepositoryUseCase(repsoitory: Repository) : GetUserRepositoryUseCase =
-            GetUserRepositoryUseCaseImpl(repsoitory)
+    fun provideGetUserRepositoryUseCase(repsoitory: Repository): GetUserRepositoryUseCase =
+        GetUserRepositoryUseCaseImpl(repsoitory)
 }

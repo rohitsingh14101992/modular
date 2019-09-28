@@ -39,6 +39,6 @@ dependencies {
     compileOnly lifecycle.runtime
     kapt di.daggerCompiler
     kapt di.daggerAndroidCompiler
-    implementation  project(path: ':repo_bridge')
-    implementation  project(':base')
+    implementation project(path: ':repo_bridge')
+    implementation project(':base')
 }

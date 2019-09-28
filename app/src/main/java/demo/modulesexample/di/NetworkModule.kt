@@ -9,8 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+object NetworkModule {
 
+    @JvmStatic
     @Singleton
     @Provides
     fun providesRetrofit(okHttpClient: OkHttpClient) =
@@ -21,6 +22,7 @@ class NetworkModule {
             .client(okHttpClient)
             .build()
 
+    @JvmStatic
     @Singleton
     @Provides
     fun providesOkHttpClient(): OkHttpClient {
