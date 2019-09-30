@@ -5,14 +5,15 @@ import android.view.View
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
+import demo.m.base.model.User
 import demo.m.repo_bridge.GetUserRepositoryUseCase
 import demo.m.repo_bridge.model.RepositoryResponse
-import demo.m.base.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class UserDetailsViewModel constructor(val getUserRepositoryUseCase: GetUserRepositoryUseCase) : ViewModel() {
+class UserDetailsViewModel constructor(val getUserRepositoryUseCase: GetUserRepositoryUseCase) :
+    ViewModel() {
     val compositeDisposable = CompositeDisposable()
     var showLoader = ObservableInt(View.GONE)
     val response = ObservableField<List<RepositoryResponse>>()
@@ -37,7 +38,7 @@ class UserDetailsViewModel constructor(val getUserRepositoryUseCase: GetUserRepo
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
+            .subscribe({
                 response.set(it)
             }, {
                 Log.e("error", it.toString())

@@ -9,5 +9,5 @@ import demo.m.search_bridge.SearchViewNavigation
 class SearchNavigationModule {
 
     @Provides
-    fun provideSearchViewNavigation() : SearchViewNavigation = SearchViewNavigationImpl()
+    fun provideSearchViewNavigation(): SearchViewNavigation = SearchViewNavigationImpl()
 }

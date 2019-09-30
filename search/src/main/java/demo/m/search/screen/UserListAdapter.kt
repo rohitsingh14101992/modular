@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import demo.m.search.R
 import demo.m.base.model.User
+import demo.m.search.R
 
-class UserListAdapter constructor(val itemClickListener: ItemClickListener):
+class UserListAdapter constructor(val itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
     var items: MutableList<User> = arrayListOf()
 

@@ -1,5 +1,6 @@
 package demo.modulesexample.main
 
+import dagger.Component
 import dagger.Module
 import dagger.Provides
 import demo.m.base.ScreenScope
@@ -14,7 +15,8 @@ class MainActivityModule {
     @ScreenScope
     @Provides
     internal
-    fun providesViewIntentSubject(): PublishSubject<MainActivityViewIntent> = PublishSubject.create()
+    fun providesViewIntentSubject(): PublishSubject<MainActivityViewIntent> =
+        PublishSubject.create()
 
     @Provides
     internal
@@ -27,4 +29,18 @@ class MainActivityModule {
         subject: PublishSubject<MainActivityViewIntent>
     ): MainActivityViewModelFactory =
         MainActivityViewModelFactory(searchViewNavigation, subject)
+}
+
+
+@ScreenScope
+@Component(
+    dependencies = [MainActivityComponentParent::class],
+    modules = [MainActivityModule::class]
+)
+interface MainActivityComponent {
+    fun inject(activity: MainActivity)
+}
+
+interface MainActivityComponentParent {
+    fun searchViewNavigation(): SearchViewNavigation
 }
